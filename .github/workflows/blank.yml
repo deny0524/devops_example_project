@@ -108,11 +108,15 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
     - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
+      uses: SonarSource/sonarqube-scan-action@v4.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  
+      with:
+        args: >
+          -Dsonar.projectKey=deny0524_counter-service-dev
+          -Dsonar.organization=deny0524
+
     - name: Setup Git
       run: |
         git config --global user.name 'deny0524'
