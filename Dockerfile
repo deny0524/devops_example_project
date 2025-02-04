@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG PYTHON_VERSION=3.11
-FROM python:${PYTHON_VERSION}-alpine3.19 as base
+FROM python:${PYTHON_VERSION}-alpine3.19 AS base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -10,10 +10,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
-
-# Install Gunicorn directly before installing other dependencies.
-RUN python -m pip install --upgrade pip && \
-    python -m pip install gunicorn
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
@@ -47,4 +43,4 @@ COPY counter-service.py .
 EXPOSE 8080
 
 # Run the application.Logs enabled to see the output logs
-CMD ["python", "counter-service.py"]
+CMD ["gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
