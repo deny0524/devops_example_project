@@ -1,13 +1,6 @@
 # syntax=docker/dockerfile:1
-
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
-
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
-
-ARG PYTHON_VERSION=3.12.2
-FROM python:${PYTHON_VERSION}-slim as base
+ARG PYTHON_VERSION=3.13.0a4
+FROM python:${PYTHON_VERSION}-alpine3.19 as base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -41,11 +34,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Switch to the non-privileged user to run the application.
 USER appuser
 
-# Copy the source code into the container.
-COPY . .
+# Copy the source code(counter-service.py) into the container.
+COPY counter-service.py .
 
 # Expose the port that the application listens on.
-EXPOSE 8000
+# In most Unix-like operating systems, binding to ports below 1024 requires elevated privileges.
+# This application runs on Docker as an appuser, which is restricted to binding to ports below 1024.
+EXPOSE 8080
 
-# Run the application.
-CMD gunicorn 'counter-service:app' --bind=0.0.0.0:8000
+# Run the application.Logs enabled to see the output logs
+CMD ["gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
