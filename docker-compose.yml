@@ -9,4 +9,3 @@ services:
     restart: always
     mem_limit: 256M
     cpus: 0.5
-    command: ["python", "counter-service.py"]
