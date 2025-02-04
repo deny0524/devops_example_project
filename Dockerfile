@@ -11,6 +11,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+# Install Gunicorn directly before installing other dependencies.
+RUN python -m pip install --upgrade pip && \
+    python -m pip install gunicorn
+    
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
