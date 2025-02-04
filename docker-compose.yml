@@ -9,4 +9,4 @@ services:
     restart: always
     mem_limit: 256M
     cpus: 0.5
-    command: ["gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
+    command: ["/usr/local/bin/gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
