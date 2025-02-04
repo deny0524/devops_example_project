@@ -30,14 +30,8 @@ RUN adduser \
 RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install --no-cache-dir -r requirements.txt
 
-# Ensure gunicorn is installed globally by adding it explicitly if needed
-RUN python -m pip install --no-cache-dir gunicorn
-
-# Ensure the PATH includes gunicorn's install directory
-ENV PATH="/usr/local/bin:$PATH"
-
 # Switch to the non-privileged user to run the application.
-USER appuser
+# USER appuser
 
 # Copy the source code(counter-service.py) into the container.
 COPY counter-service.py .
