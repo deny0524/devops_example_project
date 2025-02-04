@@ -33,6 +33,9 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
 # Ensure gunicorn is installed globally by adding it explicitly if needed
 RUN python -m pip install --no-cache-dir gunicorn
 
+# Check if gunicorn was installed successfully
+RUN which gunicorn || echo "Gunicorn not found!"
+
 # Ensure the PATH includes gunicorn's install directory
 ENV PATH="/usr/local/bin:$PATH"
 
