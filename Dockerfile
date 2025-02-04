@@ -9,6 +9,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
+# Add /usr/local/bin to PATH explicitly
+ENV PATH="/usr/local/bin:$PATH"
+
 WORKDIR /app
 
 # Create a non-privileged user that the app will run under.
@@ -27,6 +30,7 @@ RUN adduser \
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
 # into this layer.
+COPY requirements.txt .
 RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install --no-cache-dir -r requirements.txt
 
@@ -42,4 +46,4 @@ COPY counter-service.py .
 EXPOSE 8080
 
 # Run the application.Logs enabled to see the output logs
-CMD ["/usr/local/bin/gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
+CMD ["gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
