@@ -121,6 +121,9 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         # Push the latest tag
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+# 從ECR拉取映像檔並且部屬到EC2
+
     - name: Deploy to EC2
       env:
         EC2_PEM_KEY: ${{ secrets.EC2_PEM_KEY }}
