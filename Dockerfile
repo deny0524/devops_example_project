@@ -14,7 +14,7 @@ WORKDIR /app
 # Install Gunicorn directly before installing other dependencies.
 RUN python -m pip install --upgrade pip && \
     python -m pip install gunicorn
-    
+
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
@@ -47,4 +47,4 @@ COPY counter-service.py .
 EXPOSE 8080
 
 # Run the application.Logs enabled to see the output logs
-CMD ["gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
+CMD ["python", "counter-service.py"]
