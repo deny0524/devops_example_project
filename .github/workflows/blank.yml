@@ -105,7 +105,6 @@ jobs:
       with:
         image: ${{ env.IMAGE_NAME }}
         args: --severity-threshold=high --policy-path=.snyk
-      continue-on-error: false
 
 # 將Docker映像檔推到Amazon ECR上面
 
